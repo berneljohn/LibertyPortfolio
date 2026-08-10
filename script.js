@@ -103,7 +103,7 @@ function sendMail(event){
     });
 
     /* ═════════════ SEND EMAIL ═════════════ */
-    emailjs.send("service_vv1jnrh","template_mgrqvkt",params)
+    emailjs.send("service_vv1jnrh","template_0tpa6di",params)
 
     .then(function(response){
         console.log("SUCCESS!",response);
