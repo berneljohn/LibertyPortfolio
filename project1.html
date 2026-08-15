@@ -1,0 +1,1199 @@
+<!doctype html>
+<html
+  lang="en"
+  x-data="{dark: localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches),scrolled:false,mobileMenu:false,progress:0}"
+  :class="{'dark':dark}"
+  x-init="
+        $watch('dark', v => localStorage.setItem('theme', v ? 'dark' : 'light'));
+        window.addEventListener('scroll', () => {
+          scrolled = window.scrollY > 20;
+          progress = Math.min(100, Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100));
+        }, { passive: true });
+      "
+  class="scroll-smooth"
+>
+  <head>
+    <!-- ═════════════ BASIC META ═════════════ -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Liberty Bangcaya Suficiencia | Bookkeeper & Accounting Professional
+    </title>
+    <meta
+      name="description"
+      content="Professional portfolio of Liberty Bangcaya Suficiencia, an experienced Bookkeeper and Accounting Professional with over 20 years of expertise in bookkeeping, financial reporting, payroll processing, administrative support, QuickBooks, Xero, and Microsoft Excel."
+    />
+    <meta
+      name="keywords"
+      content="Liberty Bangcaya Suficiencia, Bookkeeper, Accountant, Accounting Professional, Bookkeeping Services, Financial Reporting, Payroll Processing, Administrative Support, QuickBooks, Xero, Microsoft Excel, Accounting Portfolio, Philippines"
+    />
+    <meta name="author" content="Liberty Bangcaya Suficiencia" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://yourdomain.com/" />
+    <meta name="theme-color" content="#0F766E" />
+    <!-- ═════════════ FAVICON ═════════════ -->
+    <link
+      rel="icon"
+      href="https://berneljohn.github.io/LibertyPortfolio/pictures/main/logotop.jpg"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://berneljohn.github.io/LibertyPortfolio/pictures/main/logotop.jpg"
+    />
+
+    <!-- ═════════════ LIBRARIES ═════════════ -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ═════════════ TAILWIND CONFIG ═════════════ -->
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Playlist Script", "cursive"],
+              body: ["DM Sans", "sans-serif"],
+              serif: ["Playfair Display", "serif"],
+            },
+            colors: {
+              accent: "#E18B22",
+              "accent-light": "#FFE08F",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* ═════════════ GLOBAL RESET ═════════════ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* ═════════════ TYPOGRAPHY ═════════════ */
+      html {
+        font-family: "DM Sans", sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Playfair Display", serif;
+      }
+
+      /* ═════════════ CUSTOM SCROLLBAR ═════════════ */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f2efeb;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e18b22;
+        border-radius: 99px;
+      }
+
+      /* ═════════════ BODY ═════════════ */
+      body {
+        background: #f2efeb;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.3;
+      }
+
+      /* ═════════════ NAVIGATION ═════════════ */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1.5px;
+        background: #e18b22;
+        transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* ═════════════ PRIMARY BUTTON ═════════════ */
+      .btn-primary {
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-primary::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.24);
+        transform: skewX(-20deg);
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .btn-primary:hover::after {
+        left: 160%;
+      }
+
+      /* ═════════════ ALPINE.JS ═════════════ */
+      [x-cloak] {
+        display: none !important;
+      }
+
+      /* ═════════════ PHOTO FRAME ═════════════ */
+      .photo-frame {
+        position: relative;
+        overflow: hidden;
+        background: #f2efeb;
+      }
+      .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .photo-frame:hover img {
+        transform: scale(1.04);
+      }
+
+      /* ═════════════ READING PROGRESS ═════════════ */
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: #e18b22;
+        z-index: 100;
+        transition: width 0.1s linear;
+        box-shadow: 0 0 10px rgba(225, 139, 34, 0.3);
+      }
+
+      /* ═════════════ REVEAL ANIMATION ═════════════ */
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .d1 {
+        transition-delay: 0.07s;
+      }
+      .d2 {
+        transition-delay: 0.14s;
+      }
+      .d3 {
+        transition-delay: 0.21s;
+      }
+      .d4 {
+        transition-delay: 0.28s;
+      }
+
+      /* ═════════════ CASE STUDY PROSE ═════════════ */
+      .prose-cs h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.55rem;
+        font-weight: 600;
+        margin: 2.75rem 0 1rem;
+        line-height: 1.25;
+      }
+      .prose-cs h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin: 2rem 0 0.6rem;
+        line-height: 1.3;
+        color: #e18b22;
+      }
+      .prose-cs p {
+        margin: 0 0 1.4rem;
+        line-height: 1.82;
+        color: #777777;
+      }
+      .dark .prose-cs p {
+        color: #f2efeb99;
+      }
+      .prose-cs ul {
+        margin: 0 0 1.4rem 1.5rem;
+        list-style: disc;
+      }
+      .prose-cs li {
+        margin-bottom: 0.45rem;
+        line-height: 1.7;
+        color: #777777;
+      }
+      .dark .prose-cs li {
+        color: #f2efeb99;
+      }
+      .prose-cs blockquote {
+        border-left: 3px solid #e18b22;
+        padding: 0.75rem 1.25rem;
+        margin: 0 0 1.8rem;
+        background: #fff8e8;
+        border-radius: 0 8px 8px 0;
+      }
+      .dark .prose-cs blockquote {
+        background: #3a3530;
+      }
+      .prose-cs blockquote p {
+        color: #777777;
+        font-style: italic;
+        margin: 0;
+      }
+      .dark .prose-cs blockquote p {
+        color: #f2efeb99;
+      }
+      .prose-cs hr {
+        border: none;
+        border-top: 1px solid #e18b2233;
+        margin: 2.5rem 0;
+      }
+      .dark .prose-cs hr {
+        border-top-color: #f2efeb1a;
+      }
+      .prose-cs a {
+        color: #e18b22;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      /* ═════════════ STAT CARD ═════════════ */
+      .stat-card {
+        border-left: 3px solid #e18b22;
+      }
+
+      /* ═════════════ IMAGE CAPTION ═════════════ */
+      .img-caption {
+        font-size: 0.8rem;
+        color: #777777;
+        text-align: center;
+        margin-top: 0.6rem;
+      }
+
+      /* ═════════════ STEP BADGE ═════════════ */
+      .step-badge {
+        width: 2rem;
+        height: 2rem;
+        min-width: 2rem;
+        border-radius: 50%;
+        background: #e18b22;
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ═════════════ CARD HOVER ═════════════ */
+      .card-h {
+        transition:
+          transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+          border-color 0.18s,
+          box-shadow 0.28s ease;
+      }
+      .card-h:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 35px rgba(51, 51, 51, 0.08);
+      }
+      /* ================================
+   IMAGE LIGHTBOX
+================================ */
+
+      .image-trigger {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        background: transparent;
+        cursor: zoom-in;
+      }
+
+      .image-trigger img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Lightbox background */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 30px;
+
+        background: rgba(0, 0, 0, 0.88);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transition:
+          opacity 0.25s ease,
+          visibility 0.25s ease;
+      }
+
+      /* Open state */
+      .lightbox.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      /* Expanded image */
+      .lightbox-image {
+        display: block;
+
+        max-width: 95vw;
+        max-height: 90vh;
+
+        width: auto;
+        height: auto;
+
+        object-fit: contain;
+
+        border-radius: 12px;
+
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Close button */
+      .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+
+        width: 45px;
+        height: 45px;
+
+        border: none;
+        border-radius: 50%;
+
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+
+        font-size: 30px;
+        line-height: 1;
+
+        cursor: pointer;
+
+        z-index: 2;
+
+        transition: background 0.2s ease;
+      }
+
+      .lightbox-close:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      /* Mobile */
+      @media (max-width: 600px) {
+        .lightbox {
+          padding: 15px;
+        }
+
+        .lightbox-image {
+          max-width: 96vw;
+          max-height: 85vh;
+        }
+
+        .lightbox-close {
+          top: 12px;
+          right: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <!-- ═════════════ BODY ═════════════ -->
+  <body
+    class="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-body antialiased"
+  >
+    <!-- ═════════════ READING PROGRESS BAR ═════════════ -->
+    <div
+      class="progress-bar"
+      :style="`width:${progress}%`"
+      role="progressbar"
+      :aria-valuenow="progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-label="Reading progress"
+    ></div>
+
+    <!-- ═════════════ HEADER / NAVIGATION ═════════════ -->
+    <header
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      :class="scrolled?'bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md shadow-sm shadow-black/5':'bg-transparent'"
+    >
+      <!-- Main Navigation -->
+      <nav
+        class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between"
+        aria-label="Main navigation"
+      >
+        <!-- Logo -->
+        <a
+          href="index.html"
+          class="font-serif font-bold text-xl tracking-tight z-10"
+        >
+          <span class="text-zinc-900 dark:text-white">LIBER</span
+          ><span class="text-accent">TY</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <ul
+          class="hidden md:flex items-center gap-8 text-sm font-medium"
+          role="list"
+        >
+          <li>
+            <a
+              href="index.html#services"
+              class="nav-link text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              >Services</a
+            >
+          </li>
+          <li>
+            <a href="allprojects.html" class="nav-link text-accent font-medium"
+              >Work</a
+            >
+          </li>
+          <li>
+            <a
+              href="index.html#about"
+              class="nav-link text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              >About</a
+            >
+          </li>
+          <li>
+            <a
+              href="#reviews"
+              class="nl text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              :class="s==='reviews'?'on !text-zinc-900 dark:!text-white':''"
+              >Reviews</a
+            >
+          </li>
+          <li>
+            <a
+              href="index.html#contact"
+              class="nav-link text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              >Contact</a
+            >
+          </li>
+        </ul>
+
+        <!-- Right Controls -->
+        <div class="flex items-center gap-3">
+          <!-- Dark Mode Toggle -->
+          <button
+            @click="dark=!dark"
+            class="w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            :aria-label="dark ? 'Light mode' : 'Dark mode'"
+          >
+            <svg
+              x-show="!dark"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
+              />
+            </svg>
+
+            <svg
+              x-show="dark"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"
+              />
+            </svg>
+          </button>
+
+          <!-- Contact Button -->
+          <a
+            href="index.html#contact"
+            class="hidden md:inline-flex items-center gap-2 btn-primary bg-accent text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-accent-light transition-colors"
+          >
+            Contact me →
+          </a>
+
+          <!-- Mobile Menu Toggle -->
+          <button
+            @click="mobileMenu=!mobileMenu"
+            class="md:hidden w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800"
+            aria-label="Toggle menu"
+          >
+            <svg
+              x-show="!mobileMenu"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+
+            <svg
+              x-show="mobileMenu"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- ═════════════ MOBILE MENU ═════════════ -->
+      <div
+        x-show="mobileMenu"
+        x-cloak
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-y-2"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-2"
+        class="md:hidden bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-900"
+      >
+        <ul
+          class="flex flex-col px-6 py-4 gap-4 text-sm font-medium"
+          role="list"
+        >
+          <li>
+            <a
+              href="index.html#services"
+              @click="mobileMenu=false"
+              class="block text-zinc-700 dark:text-zinc-300"
+              >Services</a
+            >
+          </li>
+          <li>
+            <a
+              href="projects.html"
+              @click="mobileMenu=false"
+              class="block text-accent font-medium"
+              >Work</a
+            >
+          </li>
+          <li>
+            <a
+              href="index.html#about"
+              @click="mobileMenu=false"
+              class="block text-zinc-700 dark:text-zinc-300"
+              >About</a
+            >
+          </li>
+          <li>
+            <a
+              href="#reviews"
+              @click="mm=false"
+              class="block text-zinc-700 dark:text-zinc-300 hover:text-accent transition-colors"
+              >Reviews</a
+            >
+          </li>
+          <li>
+            <a
+              href="index.html#contact"
+              @click="mobileMenu=false"
+              class="block text-zinc-700 dark:text-zinc-300"
+              >Contact</a
+            >
+          </li>
+        </ul>
+      </div>
+    </header>
+    <main>
+      <!-- ═════════════ CASE STUDY ═════════════ -->
+      <article>
+        <!-- ═════════════ CASE STUDY HEADER ═════════════ -->
+        <header class="pt-32 pb-10 max-w-4xl mx-auto px-6">
+          <!-- Back Link -->
+          <a
+            href="allprojects.html"
+            class="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-accent transition-colors mb-8"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 16l-4-4m0 0l4-4m-4 4h18"
+              />
+            </svg>
+            Back to projects
+          </a>
+
+          <!-- Project Tags -->
+          <div class="flex flex-wrap items-center gap-3 mb-6">
+            <span
+              class="text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2.5 py-1 rounded-full"
+              >Social Media Management</span
+            >
+            <span class="text-xs text-zinc-400 ml-1">2025</span>
+          </div>
+
+          <!-- Project Title -->
+          <h1
+            class="font-serif font-bold text-4xl md:text-5xl lg:text-6xl text-zinc-900 dark:text-white leading-tight mb-6 reveal d1"
+          >
+            Content Scheduling & Social Media Organization
+          </h1>
+
+          <!-- Project Description -->
+          <p
+            class="d1 text-xl text-zinc-500 dark:text-zinc-400 leading-relaxed mb-10 max-w-2xl text-justify reveal d1"
+          >
+            Portfolio sample showcasing content scheduling, social media
+            management, and platform organization using Buffer and Meta Business
+            Suite.
+          </p>
+
+          <!-- Project Information -->
+          <div
+            class="d2 grid grid-cols-2 md:grid-cols-4 gap-4 py-8 border-t border-b border-zinc-100 dark:border-zinc-900 reveal d1"
+          >
+            <div>
+              <p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+                Content Planning
+              </p>
+
+              <p class="font-medium text-zinc-900 dark:text-white text-sm">
+                Social Media Content Organization
+              </p>
+            </div>
+
+            <div>
+              <p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+                Scheduling Approach
+              </p>
+              <p class="font-medium text-zinc-900 dark:text-white text-sm">
+                Planned & Consistent Publishing
+              </p>
+            </div>
+
+            <div>
+              <p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+                Platform Management
+              </p>
+              <p class="font-medium text-zinc-900 dark:text-white text-sm">
+                Content Scheduling • Post Organization • Social Media
+                Coordination
+              </p>
+            </div>
+
+            <div>
+              <p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+                Management Tools
+              </p>
+              <p class="font-medium text-zinc-900 dark:text-white text-sm">
+                Buffer • Meta Business Suite
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <!-- ═════════════ HERO IMAGE ═════════════ -->
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/1.png"
+                alt="Novu — SaaS Dashboard redesign hero"
+                loading="eager"
+              />
+            </button>
+          </div>
+          <p class="img-caption">SOCIAL MEDIA MANAGEMENT PORTFOLIO</p>
+        </div>
+        <!-- ═════════════ BEFORE & AFTER ═════════════ -->
+        <div class="max-w-4xl mx-auto px-6 mb-12 reveal d1">
+          <div class="grid md:grid-cols-2 gap-4">
+            <!-- Before -->
+            <div>
+              <div class="photo-frame w-full h-full rounded-2xl">
+                <button
+                  class="image-trigger"
+                  type="button"
+                  aria-label="Expand image"
+                  data-image="pictures/project3/2.png"
+                  data-alt="High-fidelity Figma screens showing the new dashboard layout"
+                >
+                  <img
+                    src="pictures/project1/3.png"
+                    alt="Before — original dashboard"
+                    loading="lazy"
+                  />
+                </button>
+              </div>
+              <p class="img-caption mt-2">META BUSINESS SUITE DASHBOARD</p>
+            </div>
+            <!-- After -->
+            <div>
+              <div class="photo-frame w-full h-full rounded-2xl">
+                <button
+                  class="image-trigger"
+                  type="button"
+                  aria-label="Expand image"
+                  data-image="pictures/project3/2.png"
+                  data-alt="High-fidelity Figma screens showing the new dashboard layout"
+                >                
+                <img
+                  src="pictures/project1/2.png"
+                  alt="After — redesigned dashboard"
+                  loading="lazy"
+                />
+                </button>
+              </div>
+              <p class="img-caption mt-2">
+                BUFFER DASHBOARD WITH SCHEDULED CONTENT
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- ═════════════ FEATURED IMAGE ═════════════ -->
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/4.png"
+                alt="High-fidelity Figma screens — new dashboard layout"
+                loading="lazy"
+              />
+            </button>
+          </div>
+          <p class="img-caption">
+              BEFORE-AND-AFTER SHOWCASE OF INSTAGRAM BRANDINGWITH FOLLOWERS  
+              AND VISUAL ENHANCEMENT.
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/5.png"
+                alt="Novu — SaaS Dashboard redesign hero"
+                loading="eager"
+              />
+            </button>
+          </div>
+          <p class="img-caption">
+            DEMONSTRATING THE TRANSFORMATION OF A FACEBOOK 
+            PAGE THROUGH COHESIVE BRANDING AND CREATIVE DESIGN.
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/6.png"
+                alt="High-fidelity Figma screens — new dashboard layout"
+                loading="lazy"
+              />
+            </button>
+          </div>
+          <p class="img-caption">
+            BEFORE-AND-AFTER SHOWCASE OF TIKTOK PROFILE 
+            BRANDING AND CONTENT ENHANCEMENT.
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/7.png"
+                alt="High-fidelity Figma screens — new dashboard layout"
+                loading="lazy"
+              />
+            </button>
+          </div>
+          <p class="img-caption">
+            CAROUSEL-STYLE CONTENT DESIGNED TO DELIVER ENGAGING, 
+            INFORMATIVE, AND VISUALLY COHESIVE SOCIAL MEDIA POSTS.
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/8.png"
+                alt="High-fidelity Figma screens — new dashboard layout"
+                loading="lazy"
+              />
+            </button>
+          </div>
+          <p class="img-caption">
+            SHORT-FORM VIDEO CONTENT FOCUSED ON STORYTELLING, BRANDING, AND
+            AUDIENCE ENGAGEMENT.
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/9.png"
+                alt="High-fidelity Figma screens — new dashboard layout"
+                loading="lazy"
+              />
+            </button>
+          </div>
+          <p class="img-caption">
+            EFFICIENT CALENDAR MANAGEMENT FOCUSED ON ORGANIZING SCHEDULES, SETTING APPOINTMENTS, 
+            COORDINATING MEETINGS, AND ENSURING SMOOTH DAILY OPERATIONS.
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 mb-4 reveal d1">
+          <div class="photo-frame w-full h-full md:h-full rounded-2xl">
+            <button
+              class="image-trigger"
+              type="button"
+              aria-label="Expand image"
+              data-image="pictures/project3/2.png"
+              data-alt="High-fidelity Figma screens showing the new dashboard layout"
+            >
+              <img
+                src="pictures/project1/10.png"
+                alt="High-fidelity Figma screens — new dashboard layout"
+                loading="lazy"
+              />
+            </button>
+          </div>
+          <p class="img-caption">
+            MANAGED AND ORGANIZED DIGITAL DOCUMENTS USING GOOGLE DRIVE, ENSURING EASY 
+            ACCESS, PROPER FILE STRUCTURE, AND EFFICIENT COLLABORATION.
+          </p>
+        </div>
+        <!-- ═════════════ REFLECTIONS ═════════════ -->
+        <div class="max-w-3xl mx-auto px-6 pb-16 prose-cs reveal d1">
+          <!-- Reflection -->
+          <h2>Reflections</h2>
+
+          <p>
+            One of the most valuable lessons from this project was learning that
+            effective social media management goes beyond simply publishing
+            content. Consistency, organization, and proper planning play an
+            important role in maintaining a reliable online presence. Scheduling
+            content in advance helped create a smoother workflow, while keeping
+            posts and platforms organized made it easier to manage daily social
+            media activities. Using tools such as Buffer and Meta Business Suite
+            also showed me how the right systems can make content management
+            more efficient and consistent.
+          </p>
+
+          <hr />
+
+          <!-- Call to Action -->
+          <p>
+            <em
+              >Interested in My Work?
+              <a href="index.html#contact">Get in touch</a> — I'm available for
+              new projects.</em
+            >
+          </p>
+        </div>
+      </article>
+
+      <!-- ═════════════ MORE PROJECTS ═════════════ -->
+      <section class="bg-zinc-50 dark:bg-zinc-900/50 py-16 reveal d1">
+        <div class="max-w-6xl mx-auto px-6">
+          <!-- Section Header -->
+          <div class="flex items-center justify-between mb-8">
+            <h2
+              class="font-semibold font-bold text-2xl text-zinc-900 dark:text-white"
+            >
+              More projects
+            </h2>
+            <a
+              href="allprojects.html"
+              class="text-sm font-medium text-accent nav-link hidden md:block"
+              >View all →</a
+            >
+          </div>
+
+          <!-- Project Grid -->
+          <div class="grid md:grid-cols-3 gap-6">
+            <!-- Project 1 -->
+            <article
+              class="card-h group bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 hover:border-accent transition-colors"
+            >
+              <div class="photo-frame w-full h-44">
+                <img
+                  src="pictures/project2/1.png"
+                  alt="Finlo — Fintech App"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-5">
+                <div class="flex gap-2 mb-2">
+                  <span
+                    class="text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2.5 py-1 rounded-full"
+                    >Branding & Graphic Design</span
+                  >
+                </div>
+                <a href="project2.html">
+                  <h3
+                    class="font-semibold font-bold text-base text-zinc-900 dark:text-white mb-2 group-hover:text-accent transition-colors"
+                  >
+                    Branding & Graphic Design Portfolio
+                  </h3>
+                </a>
+                <a
+                  href="project2.html"
+                  class="text-sm font-medium text-accent nav-link"
+                  >View project →
+                </a>
+              </div>
+            </article>
+
+            <!-- Project 2 -->
+            <article
+              class="card-h group bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-100 dark:border-zinc-800 hover:border-accent transition-colors"
+            >
+              <div class="photo-frame w-full h-44">
+                <img
+                  src="pictures/project3/1.png"
+                  alt="Orea — Creative Agency"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-5">
+                <div class="flex gap-2 mb-2">
+                  <span
+                    class="text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2.5 py-1 rounded-full"
+                    >Email Management & Signature Design</span
+                  >
+                </div>
+                <a href="project3.html">
+                  <h3
+                    class="font-semibold font-bold text-base text-zinc-900 dark:text-white mb-2 group-hover:text-accent transition-colors"
+                  >
+                    Email Management & Email Signature
+                  </h3>
+                </a>
+                <a
+                  href="project3.html"
+                  class="text-sm font-medium text-accent nav-link"
+                  >View project →</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <!-- Mobile Button -->
+          <div class="text-center mt-8 md:hidden">
+            <a href="allprojects.html" class="text-sm font-medium text-accent"
+              >View all projects →</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ═════════════ CALL TO ACTION ═════════════ -->
+      <section class="py-24">
+        <div class="max-w-6xl mx-auto px-6 reveal d1">
+          <div
+            class="bg-zinc-900 dark:bg-zinc-800 rounded-3xl p-10 md:p-14 text-center relative overflow-hidden"
+          >
+            <!-- Background Effects -->
+            <div
+              class="absolute top-0 right-0 w-64 h-64 bg-accent/20 rounded-full blur-3xl pointer-events-none"
+              aria-hidden="true"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-40 h-40 bg-accent/10 rounded-full blur-2xl pointer-events-none"
+              aria-hidden="true"
+            ></div>
+
+            <!-- CTA Content -->
+            <div class="relative z-10">
+              <p
+                class="text-xs font-semibold tracking-[0.25em] uppercase text-accent mb-3"
+              >
+                Ready to start?
+              </p>
+              <h2
+                class="font-semibold font-bold text-3xl md:text-4xl text-white mb-4"
+              >
+                Got a similar project?
+              </h2>
+              <p class="text-zinc-400 max-w-md mx-auto mb-8">
+                I'm available for new projects. Tell me about what you're
+                building and let's see if we're a good fit.
+              </p>
+              <a
+                href="index.html#contact"
+                class="inline-flex items-center gap-2 btn-primary bg-accent text-white font-medium px-8 py-3.5 rounded-full hover:bg-accent-light transition-colors"
+              >
+                Start a project →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-zinc-100 dark:border-zinc-900">
+      <div
+        class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4"
+      >
+        <p class="text-sm text-zinc-400">
+          © <span id="year"></span> Liberty. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Reveal on scroll
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              obs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -30px 0px" },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+    </script>
+    <div class="lightbox" id="lightbox">
+      <button
+        class="lightbox-close"
+        id="lightboxClose"
+        type="button"
+        aria-label="Close image"
+      >
+        &times;
+      </button>
+
+      <img class="lightbox-image" id="lightboxImage" src="" alt="" />
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
